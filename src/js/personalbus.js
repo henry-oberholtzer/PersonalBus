@@ -1,8 +1,20 @@
 import { printError, printResponse } from "..";
+export { busRequest, getBus };
 
-export default class busRequest {
+function getBus(locID) {
+    const promise = busRequest.personalBus(locID);
+    promise.then(
+        (response) => {
+            printResponse(response);
+        },
+        (errorResponse) => {
+            printError(errorResponse);
+        });
+}
+
+class busRequest {
     static personalBus(locID) {
-        let promise = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();
             const url = `https://developer.trimet.org/ws/v2/arrivals?locIDs=${locID}&appID=${process.env.APP_ID}&json=true`;
             request.addEventListener("loadend", () => {
@@ -16,13 +28,5 @@ export default class busRequest {
             request.open("GET", url, true);
             request.send();
         });
-        promise.then(
-            (response) => {
-                printResponse(response);
-            },
-            (errorResponse) => {
-                printError(errorResponse);
-            }
-        );
     }
 }
