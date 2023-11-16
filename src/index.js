@@ -1,7 +1,7 @@
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/styles.css";
-import { busRequest } from "./js/personalbus";
+import { getBus } from "./js/personalbus";
 export { printResponse, printError };
 
 const congestionCheck = (boolean) => {
@@ -9,17 +9,19 @@ const congestionCheck = (boolean) => {
 };
 
 const toTime = (epoch) => {
-    return new Date(epoch).toLocaleTimeString("en-US");
+    const time = new Date(epoch).toLocaleTimeString("en-US");
+    return time;
 };
 
-const arrivalCard = (route, busID, stopID, name, estimatedTime, scheduledTime, inTraffic) => {
+const arrivalCard = (route, busID, stopID, name, estimatedTime, scheduledTime, inTraffic, routeColor) => {
     const card = document.createElement("div");
-    card.setAttribute("class", "card");
+    card.setAttribute("class", "card m-2");
     card.setAttribute("style", "width: 20rem");
     const cardBody = document.createElement("div");
     cardBody.setAttribute("class", "card-body");
     const cardHeader = document.createElement("h5");
     cardHeader.setAttribute("class", "card-title");
+    cardHeader.setAttribute("style",`color:#${routeColor}`);
     cardHeader.append(`Route ${route} - ${name}`);
     const p = document.createElement("p");
     p.setAttribute("class", "card-text");
@@ -27,10 +29,13 @@ const arrivalCard = (route, busID, stopID, name, estimatedTime, scheduledTime, i
     const ul = document.createElement("ul");
     ul.setAttribute("class", "list-group list-group-flush");
     const estimatedLi = document.createElement("li");
+    estimatedLi.setAttribute("class", "list-group-item");
     estimatedLi.append(`Estimated arrival ${estimatedTime}`);
     const scheduledLi = document.createElement("li");
+    scheduledLi.setAttribute("class", "list-group-item");
     scheduledLi.append(`Scheduled arrival at ${scheduledTime}`);
     const trafficLi = document.createElement("li");
+    trafficLi.setAttribute("class", "list-group-item");
     trafficLi.append(inTraffic);
     ul.append(estimatedLi, scheduledLi, trafficLi);
     cardBody.append(cardHeader, p);
@@ -45,22 +50,25 @@ function printResponse(response) {
     resultSet.arrival.forEach((arrival) => {
         const route = arrival.route;
         const busID = arrival.vehicleID;
-        const stopID = arrival.locID;
+        const stopID = arrival.locid;
         const name = arrival.shortSign;
         const estimatedTime = toTime(arrival.estimated);
         const scheduledTime = toTime(arrival.scheduled);
         const inTraffic = congestionCheck(arrival.inCongestion);
-        const htmlCard = arrivalCard(route, busID, stopID, name, estimatedTime, scheduledTime, inTraffic);
+        const routeColor = arrival.routeColor;
+        const htmlCard = arrivalCard(route, busID, stopID, name, estimatedTime, scheduledTime, inTraffic, routeColor);
         responseField.append(htmlCard);
     });
 }
 
-function printError() {}
+function printError(response) {
+    console.log(response);
+}
 
 function formResponse(e) {
     e.preventDefault();
-    const locID = parseInt(document.getElementById("stopID").value, 10);
-    busRequest.personalBus(locID);
+    const locID = parseInt(document.getElementById("stopID").value);
+    getBus(locID);
 }
 
 document.querySelector("form").addEventListener("submit", formResponse);
