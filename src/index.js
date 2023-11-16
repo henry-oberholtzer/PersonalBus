@@ -15,7 +15,7 @@ const toTime = (epoch) => {
 
 const arrivalCard = (route, busID, stopID, name, estimatedTime, scheduledTime, inTraffic, routeColor) => {
     const card = document.createElement("div");
-    card.setAttribute("class", "card m-2");
+    card.setAttribute("class", "card mt-2");
     card.setAttribute("style", "width: 20rem");
     const cardBody = document.createElement("div");
     cardBody.setAttribute("class", "card-body");
@@ -34,10 +34,17 @@ const arrivalCard = (route, busID, stopID, name, estimatedTime, scheduledTime, i
     const scheduledLi = document.createElement("li");
     scheduledLi.setAttribute("class", "list-group-item");
     scheduledLi.append(`Scheduled arrival at ${scheduledTime}`);
+    ul.append(scheduledLi);
+    if (estimatedTime !== "Invalid Date") {
+        const estimatedLi = document.createElement("li");
+        estimatedLi.setAttribute("class", "list-group-item");
+        estimatedLi.append(`Estimated arrival ${estimatedTime}`);
+        ul.append(estimatedLi);
+    }
     const trafficLi = document.createElement("li");
     trafficLi.setAttribute("class", "list-group-item");
     trafficLi.append(inTraffic);
-    ul.append(estimatedLi, scheduledLi, trafficLi);
+    ul.append(trafficLi);
     cardBody.append(cardHeader, p);
     card.append(cardBody, ul);
     return card;
@@ -62,7 +69,7 @@ function printResponse(response) {
 }
 
 function printError(response) {
-    console.log(response);
+    response;
 }
 
 function formResponse(e) {

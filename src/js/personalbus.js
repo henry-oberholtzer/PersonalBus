@@ -14,7 +14,7 @@ function getBus(locID) {
 class busRequest {
     static personalBus(locID) {
         return fetch(
-            `https://developer.trimet.org/ws/v2/arrivals?locIDs=${locID}&appID=${process.env.APP_ID}`
+            `http://developer.trimet.org/ws/v2/arrivals?locIDs=${locID}&appID=${process.env.APP_ID}`,
         )
             .then((response) => {
                 if (!response.ok) {
