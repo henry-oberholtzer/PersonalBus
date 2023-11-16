@@ -7,13 +7,29 @@
 </head>
 <body>
     <div class="container-sm m-4 border rounded p-4">
-        <h1>Tri-Met Next Arrival</h1>
-        <form>
-            <label for="stopID">Input a Tri-Met Stop ID</label>
-            <input id="stopID" type="text" maxlength="4" inputmode="numeric">
-            <button id="submit">Query</button>
+        <h1 class="">Tri-Met Next Arrival</h1>
+        <form class="row form-group">
+            <div class="col input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" for="stopIDs">Stop IDs:</span>
+                </div>
+                <input id="stopIDs" type="text" class="form-control" inputmode="numeric" placeholder="7205, 7751, etc">
+            </div>
+            <div class="col input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="timeframe">Show arrivals in the next:</label>
+                </div>
+                <select class="custom-select" id="timeframe">
+                    <option value="20" selected>20 minutes</option>
+                    <option value="40">40 minutes</option>
+                    <option value="60">60 minutes</option>
+                </select>
+            </div>
+            <div class="col form-group-lg">
+                <button id="submit" class="btn btn-primary">Query</button>
+            </div>
         </form>
-        <div id="response">
+        <div class="row" id="response">
 
         </div>
     </div>
