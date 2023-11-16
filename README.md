@@ -1,4 +1,4 @@
-# (Application Name)
+# Personal Bus
 
 Brief Description of Application
 
@@ -6,10 +6,10 @@ By Henry Oberholtzer
 
 ## Technologies Used
 
-*   _List all_
-*   _the major technologies_
-*   _you used in your project_
-*   _here_
+*  JavaScript
+*  [Tri Met Web Arrivals API](https://developer.trimet.org/ws_docs/arrivals2_ws.shtml)
+*  HTML
+*  CSS
 
 ## Description
 
