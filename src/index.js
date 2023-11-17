@@ -22,10 +22,6 @@ function arrivals(locID, timeframe) {
     });
 }
 
-function detourQuery(e) {
-    const detours = e.target.id;
-    return detours;
-}
 
 const arrivalCard = (busID, subType, stopID, estimatedTime, scheduledTime, inTraffic) => {
     const card = document.createElement("div");
@@ -94,14 +90,30 @@ function printResponse(response) {
             titleCardBody.setAttribute("class", "card-body");
             titleCardBody.setAttribute("style", "width: 20rem");
             const busHeader = document.createElement("h5");
-            busHeader.setAttribute("style",`color:#${routeColor}`);
+            busHeader.setAttribute("style", `color:#${routeColor}`);
             busHeader.setAttribute("class", "card-title");
             busHeader.append(name);
             titleCardBody.append(busHeader);
             titleCard.append(titleCardBody);
             if (detoured) {
+                const detourQuery = (e) => {
+                    const detourList = e.target.id;
+                    const detourArray = detourList.toArray();
+                    const detourDiv = document.createElement("div");
+                    resultSet.detour.forEach((detour) => {
+                        for (let i = 0; i < detourArray.length; i++) {
+                            if (detour.id.match(parseInt(detourArray[0]))) {
+                                const pElement = document.createElement("p");
+                                pElement.append(detour.desc);
+                                detourDiv.append(pElement);
+                                break;
+                            }
+                        }
+                    });
+                    window.alert(detourDiv);
+                };
                 const link = document.createElement("a");
-                link.setAttribute("id",`${detourArray.toString()}`);
+                link.setAttribute("id", `${detourArray.toString()}`);
                 link.addEventListener("click", detourQuery);
                 const detourNotice = document.createElement("p");
                 detourNotice.setAttribute("class", "card-text");
@@ -109,9 +121,9 @@ function printResponse(response) {
                 detourNotice.append(`Some stops may differ`);
                 link.append(detourNotice);
                 titleCardBody.append(link);
+                buslineColumns.append(titleCard);
+                responseField.append(buslineColumns);
             }
-            buslineColumns.append(titleCard);
-            responseField.append(buslineColumns);
         }
         document.getElementById(route).append(htmlCard);
     });
